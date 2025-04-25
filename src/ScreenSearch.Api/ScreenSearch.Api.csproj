@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <IsPackable>true</IsPackable>
+        <UserSecretsId>b9827601-c32a-468a-958d-caaf6c8e3fe5</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
+        <PackageReference Include="Scalar.AspNetCore" Version="2.1.9" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Crosscutting\ScreenSearch.IoC\ScreenSearch.IoC.csproj" />
+        <ProjectReference Include="..\ScreenSearch.Application\ScreenSearch.Application.csproj" />
+    </ItemGroup>
+
+</Project>
