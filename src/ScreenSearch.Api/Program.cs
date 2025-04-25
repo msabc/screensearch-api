@@ -1,6 +1,5 @@
 using Scalar.AspNetCore;
 using ScreenSearch.Api.Filters;
-using ScreenSearch.Api.OpenAPI;
 using ScreenSearch.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,12 +14,9 @@ builder.Services.AddRouting(options =>
     options.LowercaseUrls = true;
 });
 
-builder.Services.AddOpenApi(options =>
-{
-    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
-});
+builder.Services.AddOpenApi();
 
-var applicationSettings = builder.Services.RegisterApplicationDependencies(builder.Configuration);
+builder.Services.RegisterApplicationDependencies(builder.Configuration);
 
 var app = builder.Build();
 

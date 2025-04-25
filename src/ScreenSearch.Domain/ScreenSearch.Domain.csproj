@@ -8,16 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Commands\**" />
-    <Compile Remove="Models\Services\**" />
     <EmbeddedResource Remove="Commands\**" />
-    <EmbeddedResource Remove="Models\Services\**" />
     <None Remove="Commands\**" />
-    <None Remove="Models\Services\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Interfaces\Repositories\" />
-    <Folder Include="Interfaces\Transactions\" />
+    <Folder Include="Models\Tables\" />
   </ItemGroup>
 
 </Project>

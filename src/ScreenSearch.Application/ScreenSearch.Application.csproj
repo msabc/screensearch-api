@@ -8,19 +8,12 @@
 
   <ItemGroup>
     <Compile Remove="Mappers\**" />
-    <Compile Remove="Models\**" />
     <EmbeddedResource Remove="Mappers\**" />
-    <EmbeddedResource Remove="Models\**" />
     <None Remove="Mappers\**" />
-    <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ScreenSearch.Domain\ScreenSearch.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
