@@ -1,12 +1,13 @@
 ﻿using ScreenSearch.Domain.Models.Services.External.Kinocheck;
+using ScreenSearch.Domain.Models.Services.External.Kinocheck.Dto;
 
 namespace ScreenSearch.Domain.Interfaces.Services.External.Kinocheck
 {
     public interface IKinocheckService
     {
-        Task<IEnumerable<KinocheckGetResponse>> GetTrailersAsync(int tmdbId);
+        Task<IEnumerable<KinocheckTrailerDto>> GetTrailersAsync(int tmdbId);
 
-        //Task<KinocheckGetResponse> GetLatestTrailersAsync(int page);
+        Task<GetLatestTrailersResponse> GetLatestTrailersAsync(int page);
 
         //Task<KinocheckGetResponse> GetTrendingTrailersAsync(int page, int limit);
     }

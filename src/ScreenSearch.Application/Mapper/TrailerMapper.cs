@@ -1,16 +1,13 @@
-﻿using ScreenSearch.Application.Models.Dto.Search;
-using ScreenSearch.Application.Models.Request.Search;
-using ScreenSearch.Application.Models.Response.Search;
+﻿using ScreenSearch.Application.Models.Response;
 using ScreenSearch.Application.Models.Response.Trailer;
 using ScreenSearch.Domain.Models.Services.External.Kinocheck;
-using ScreenSearch.Domain.Models.Services.External.TMDB.Discover;
-using ScreenSearch.Domain.Models.Services.External.TMDB.Discover.Dto;
+using ScreenSearch.Domain.Models.Services.External.Kinocheck.Dto;
 
 namespace ScreenSearch.Application.Mapper
 {
     internal static class TrailerMapper
     {
-        public static MovieTrailerDto MapToDto(this KinocheckGetResponse response)
+        public static MovieTrailerDto MapToDto(this KinocheckTrailerDto response)
         {
             return new MovieTrailerDto()
             {
@@ -26,6 +23,17 @@ namespace ScreenSearch.Application.Mapper
                 YoutubeChannelId = response.YoutubeChannelId,
                 YoutubeThumbnail = response.YoutubeThumbnail,
                 YoutubeVideoId = response.YoutubeVideoId
+            };
+        }
+
+        public static PagedResponse<MovieTrailerDto> MapToPagedResponse(this GetLatestTrailersResponse response)
+        {
+            return new PagedResponse<MovieTrailerDto>()
+            {
+                Results = response.Movies.Values.Select(MapToDto),
+                Page = response.Metadata.Page,
+                TotalPages = response.Metadata.TotalPages,
+                TotalResults = response.Metadata.TotalCount
             };
         }
     }

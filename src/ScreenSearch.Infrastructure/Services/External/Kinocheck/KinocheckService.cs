@@ -1,12 +1,11 @@
 ﻿using System.Net.Http.Json;
-using System.Net;
-using System.Text;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ScreenSearch.Configuration;
 using ScreenSearch.Domain.Interfaces.Services.External.Kinocheck;
 using ScreenSearch.Domain.Models.Services.External.Kinocheck;
-using ScreenSearch.Domain.Models.Services.External.TMDB.Discover;
+using ScreenSearch.Domain.Models.Services.External.Kinocheck.Dto;
 
 namespace ScreenSearch.Infrastructure.Services.External.Kinocheck
 {
@@ -17,21 +16,29 @@ namespace ScreenSearch.Infrastructure.Services.External.Kinocheck
     {
         private readonly ScreenSearchSettings _settings = screenSearchOptions.Value;
 
-        public async Task<IEnumerable<KinocheckGetResponse>> GetTrailersAsync(int tmdbId)
+        public async Task<IEnumerable<KinocheckTrailerDto>> GetTrailersAsync(int tmdbId)
         {
             string requestUri = $"{_settings.KinocheckAPISettings.GetLatestTrailersPath}?tmdb_id={tmdbId}";
 
-            return await httpClient.GetFromJsonAsync<IEnumerable<KinocheckGetResponse>>(requestUri);
+            return await httpClient.GetFromJsonAsync<IEnumerable<KinocheckTrailerDto>>(requestUri);
         }
 
-        public async Task<KinocheckGetResponse> GetLatestTrailersAsync(int page)
+        public async Task<GetLatestTrailersResponse> GetLatestTrailersAsync(int page)
         {
-            return await httpClient.GetFromJsonAsync<KinocheckGetResponse>(_settings.KinocheckAPISettings.GetLatestTrailersPath);
-        }
+            string requestUri = $"{_settings.KinocheckAPISettings.GetLatestTrailersPath}?page={page}";
 
-        public async Task<KinocheckGetResponse> GetTrendingTrailersAsync(int page, int limit)
-        {
-            return await httpClient.GetFromJsonAsync<KinocheckGetResponse>(_settings.KinocheckAPISettings.GetTrendingTrailersPath);
+            var response = await httpClient.GetAsync(requestUri);
+
+            response.EnsureSuccessStatusCode();
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            JsonSerializerOptions options = new()
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            return JsonSerializer.Deserialize<GetLatestTrailersResponse>(jsonResponse, options);
         }
     }
 }

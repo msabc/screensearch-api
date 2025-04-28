@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ScreenSearch.Domain.Models.Services.External.Kinocheck
+namespace ScreenSearch.Domain.Models.Services.External.Kinocheck.Dto
 {
-    public record KinocheckGetResponse
+    public record KinocheckTrailerDto
     {
         public required string Id { get; set; }
 
