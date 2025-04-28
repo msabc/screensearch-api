@@ -10,6 +10,9 @@
 
         public required string DiscoverShowsPath { get; set; }
 
-        public required string LanguagesPath { get; set; }
+        public required string SearchMoviesPath { get; set; }
+
+        public required string SearchShowsPath { get; set; }
+
     }
 }

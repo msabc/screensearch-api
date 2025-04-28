@@ -1,8 +1,6 @@
-﻿using System.Text.Json.Serialization;
-
-namespace ScreenSearch.Application.Models.Dto.Discover
+﻿namespace ScreenSearch.Application.Models.Dto.Search
 {
-    public class DiscoverMovieDto
+    public class SearchDto
     {
         public bool Adult { get; set; } = true;
 

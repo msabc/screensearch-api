@@ -1,6 +1,6 @@
-﻿namespace ScreenSearch.Application.Models.Request.Discover
+﻿namespace ScreenSearch.Application.Models.Request.Search
 {
-    public class DiscoverRequest
+    public class SearchRequest
     {
         public bool? IncludeAdult { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ScreenSearch.Domain.Models.Services.TMDB
+namespace ScreenSearch.Domain.Models.Services.External.TMDB
 {
     public class TMDBPagedResponse<T> where T : class
     {

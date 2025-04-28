@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
 
-namespace ScreenSearch.Domain.Models.Services.TMDB.Discover
+namespace ScreenSearch.Domain.Models.Services.External.TMDB.Discover
 {
-    public class GetTMDBDiscoverRequest
+    public class TMDBGetRequest
     {
         [DataMember(Name = "include_adult")]
         public bool? IncludeAdult { get; set; }

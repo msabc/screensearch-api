@@ -1,10 +1,13 @@
 ﻿using System.Net.Http.Headers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ScreenSearch.Application.Services.Discover;
+using ScreenSearch.Application.Services.Search;
+using ScreenSearch.Application.Services.Trailer;
 using ScreenSearch.Configuration;
-using ScreenSearch.Domain.Interfaces.Services.TMDB;
-using ScreenSearch.Infrastructure.Services.TMDB;
+using ScreenSearch.Domain.Interfaces.Services.External.Kinocheck;
+using ScreenSearch.Domain.Interfaces.Services.External.TMDB;
+using ScreenSearch.Infrastructure.Services.External.Kinocheck;
+using ScreenSearch.Infrastructure.Services.External.TMDB;
 
 namespace ScreenSearch.IoC
 {
@@ -48,12 +51,18 @@ namespace ScreenSearch.IoC
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", settings.TMDBAPISettings.AccessToken);
             });
 
+            services.AddHttpClient<IKinocheckService, KinocheckService>(client =>
+            {
+                client.BaseAddress = new Uri(settings.KinocheckAPISettings.BaseURL);
+            });
+
             return services;
         }
 
         private static IServiceCollection RegisterApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<IDiscoverService, DiscoverService>();
+            services.AddScoped<ISearchService, SearchService>();
+            services.AddScoped<ITrailerService, TrailerService>();
 
             return services;
         }

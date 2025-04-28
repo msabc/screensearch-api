@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ScreenSearch.Domain.Models.Services.TMDB.Languages
+namespace ScreenSearch.Domain.Models.Services.External.TMDB.Languages
 {
     public class LanguageResponseDto
     {

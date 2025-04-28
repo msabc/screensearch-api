@@ -1,0 +1,32 @@
+﻿using ScreenSearch.Application.Models.Dto.Search;
+using ScreenSearch.Application.Models.Request.Search;
+using ScreenSearch.Application.Models.Response.Search;
+using ScreenSearch.Application.Models.Response.Trailer;
+using ScreenSearch.Domain.Models.Services.External.Kinocheck;
+using ScreenSearch.Domain.Models.Services.External.TMDB.Discover;
+using ScreenSearch.Domain.Models.Services.External.TMDB.Discover.Dto;
+
+namespace ScreenSearch.Application.Mapper
+{
+    internal static class TrailerMapper
+    {
+        public static MovieTrailerDto MapToDto(this KinocheckGetResponse response)
+        {
+            return new MovieTrailerDto()
+            {
+                Id = response.Id,
+                Categories = response.Categories,
+                Genres = response.Genres,
+                Language = response.Language,
+                Published = response.Published,
+                Thumbnail = response.Thumbnail,
+                Title = response.Title,
+                Url = response.Url,
+                Views = response.Views,
+                YoutubeChannelId = response.YoutubeChannelId,
+                YoutubeThumbnail = response.YoutubeThumbnail,
+                YoutubeVideoId = response.YoutubeVideoId
+            };
+        }
+    }
+}

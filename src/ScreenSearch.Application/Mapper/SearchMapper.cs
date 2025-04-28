@@ -1,16 +1,16 @@
-﻿using ScreenSearch.Application.Models.Dto.Discover;
-using ScreenSearch.Application.Models.Request.Discover;
-using ScreenSearch.Application.Models.Response.Discover;
-using ScreenSearch.Domain.Models.Services.TMDB.Discover;
-using ScreenSearch.Domain.Models.Services.TMDB.Discover.Dto;
+﻿using ScreenSearch.Application.Models.Dto.Search;
+using ScreenSearch.Application.Models.Request.Search;
+using ScreenSearch.Application.Models.Response.Search;
+using ScreenSearch.Domain.Models.Services.External.TMDB.Discover;
+using ScreenSearch.Domain.Models.Services.External.TMDB.Discover.Dto;
 
 namespace ScreenSearch.Application.Mapper
 {
-    internal static class DiscoverMapper
+    internal static class SearchMapper
     {
-        public static GetTMDBDiscoverRequest MapToInfrastructureRequest(this DiscoverRequest request)
+        public static TMDBGetRequest MapToInfrastructureRequest(this SearchRequest request)
         {
-            return new GetTMDBDiscoverRequest()
+            return new TMDBGetRequest()
             {
                 
                 IncludeAdult = request.IncludeAdult,
@@ -21,9 +21,9 @@ namespace ScreenSearch.Application.Mapper
             };
         }
 
-        public static DiscoverResponse MapToResponse(this GetTMDBDiscoverResponse response)
+        public static SearchResponse MapToResponse(this TMDBGetResponse response)
         {
-            return new DiscoverResponse()
+            return new SearchResponse()
             {
                 Page = response.Page,
                 TotalPages = response.TotalPages,
@@ -32,9 +32,9 @@ namespace ScreenSearch.Application.Mapper
             };
         }
 
-        private static DiscoverMovieDto MapToDto(this TMDBDiscoverMovieResponseDto dto)
+        private static SearchDto MapToDto(this TMDBGetResponseDto dto)
         {
-            return new DiscoverMovieDto()
+            return new SearchDto()
             {
                 Id = dto.Id,
                 Adult = dto.Adult,

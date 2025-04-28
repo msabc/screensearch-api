@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ScreenSearch.Domain.Models.Services.TMDB.Discover.Dto
+namespace ScreenSearch.Domain.Models.Services.External.TMDB.Discover.Dto
 {
-    public class TMDBDiscoverMovieResponseDto
+    public class TMDBGetResponseDto
     {
         public bool Adult { get; set; } = true;
 
