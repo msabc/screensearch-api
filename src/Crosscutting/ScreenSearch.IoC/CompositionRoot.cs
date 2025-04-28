@@ -4,8 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using ScreenSearch.Application.Services.Search;
 using ScreenSearch.Application.Services.Trailer;
 using ScreenSearch.Configuration;
+using ScreenSearch.Domain.Interfaces.Serialization;
 using ScreenSearch.Domain.Interfaces.Services.External.Kinocheck;
 using ScreenSearch.Domain.Interfaces.Services.External.TMDB;
+using ScreenSearch.Infrastructure.Serialization;
 using ScreenSearch.Infrastructure.Services.External.Kinocheck;
 using ScreenSearch.Infrastructure.Services.External.TMDB;
 
@@ -20,6 +22,7 @@ namespace ScreenSearch.IoC
             services.RegisterDatabaseSettings(configuration);
 
             services.RegisterHttpClients(settings)
+                    .RegisterSerializationOptions()
                     .RegisterApplicationServices();
         }
 
@@ -55,6 +58,13 @@ namespace ScreenSearch.IoC
             {
                 client.BaseAddress = new Uri(settings.KinocheckAPISettings.BaseURL);
             });
+
+            return services;
+        }
+
+        private static IServiceCollection RegisterSerializationOptions(this IServiceCollection services)
+        {
+            services.AddSingleton<IKinocheckSerializationOptions, KinocheckSerializationOptions>();
 
             return services;
         }

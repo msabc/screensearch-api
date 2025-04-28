@@ -14,9 +14,16 @@ namespace ScreenSearch.Application.Services.Trailer
             return response.Select(x => x.MapToDto());
         }
 
-        public async Task<PagedResponse<MovieTrailerDto>> GetLatestAsync(int page)
+        public async Task<PagedResponse<MovieTrailerDto>> GetLatestAsync(int? page)
         {
             var response = await kinocheckService.GetLatestTrailersAsync(page);
+
+            return response.MapToPagedResponse();
+        }
+
+        public async Task<PagedResponse<MovieTrailerDto>> GetTrendingAsync(int? page)
+        {
+            var response = await kinocheckService.GetTrendingTrailersAsync(page);
 
             return response.MapToPagedResponse();
         }

@@ -13,16 +13,16 @@ namespace ScreenSearch.Api.Controllers
             return Ok(await trailerService.GetTrailersAsync(tmdbId));
         }
 
-        [HttpGet("latest/{page}")]
-        public async Task<IActionResult> GetLatestAsync(int page)
+        [HttpGet("latest/{page?}")]
+        public async Task<IActionResult> GetLatestAsync(int? page)
         {
             return Ok(await trailerService.GetLatestAsync(page));
         }
 
-        [HttpGet("trending")]
-        public async Task<IActionResult> GetTrendingAsync(int tmdbId)
+        [HttpGet("trending/{page?}")]
+        public async Task<IActionResult> GetTrendingAsync(int? page)
         {
-            return Ok(await trailerService.GetTrailersAsync(tmdbId));
+            return Ok(await trailerService.GetTrendingAsync(page));
         }
     }
 }

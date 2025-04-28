@@ -7,8 +7,8 @@ namespace ScreenSearch.Domain.Interfaces.Services.External.Kinocheck
     {
         Task<IEnumerable<KinocheckTrailerDto>> GetTrailersAsync(int tmdbId);
 
-        Task<GetLatestTrailersResponse> GetLatestTrailersAsync(int page);
+        Task<GetTrailersResponse> GetLatestTrailersAsync(int? page);
 
-        //Task<KinocheckGetResponse> GetTrendingTrailersAsync(int page, int limit);
+        Task<GetTrailersResponse> GetTrendingTrailersAsync(int? page);
     }
 }

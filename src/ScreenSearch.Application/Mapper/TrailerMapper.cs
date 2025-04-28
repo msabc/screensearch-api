@@ -26,11 +26,11 @@ namespace ScreenSearch.Application.Mapper
             };
         }
 
-        public static PagedResponse<MovieTrailerDto> MapToPagedResponse(this GetLatestTrailersResponse response)
+        public static PagedResponse<MovieTrailerDto> MapToPagedResponse(this GetTrailersResponse response)
         {
             return new PagedResponse<MovieTrailerDto>()
             {
-                Results = response.Movies.Values.Select(MapToDto),
+                Results = response.Trailers.Values.Select(MapToDto),
                 Page = response.Metadata.Page,
                 TotalPages = response.Metadata.TotalPages,
                 TotalResults = response.Metadata.TotalCount

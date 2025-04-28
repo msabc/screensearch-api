@@ -7,6 +7,8 @@ namespace ScreenSearch.Application.Services.Trailer
     {
         Task<IEnumerable<MovieTrailerDto>> GetTrailersAsync(int tmdbId);
 
-        Task<PagedResponse<MovieTrailerDto>> GetLatestAsync(int page);
+        Task<PagedResponse<MovieTrailerDto>> GetLatestAsync(int? page);
+
+        Task<PagedResponse<MovieTrailerDto>> GetTrendingAsync(int? page);
     }
 }
