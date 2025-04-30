@@ -5,16 +5,16 @@ using ScreenSearch.Domain.Models.Services.External.Kinocheck.Dto;
 
 namespace ScreenSearch.Infrastructure.Serialization.Kinocheck.Converters
 {
-    internal class KinocheckResponseConverter : JsonConverter<GetTrailersResponse>
+    internal class KinocheckResponseConverter : JsonConverter<KinocheckGetTrailersResponse>
     {
-        public override GetTrailersResponse Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override KinocheckGetTrailersResponse Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.StartObject)
             {
                 throw new JsonException("Expected StartObject token");
             }
 
-            var response = new GetTrailersResponse
+            var response = new KinocheckGetTrailersResponse
             {
                 Trailers = []
             };
@@ -38,7 +38,7 @@ namespace ScreenSearch.Infrastructure.Serialization.Kinocheck.Converters
                     else
                     {
                         reader.Read();
-                        var movie = JsonSerializer.Deserialize<KinocheckTrailerDto>(ref reader, options);
+                        var movie = JsonSerializer.Deserialize<KinocheckVideoDto>(ref reader, options);
                         response.Trailers[propertyName] = movie;
                     }
                 }
@@ -47,7 +47,7 @@ namespace ScreenSearch.Infrastructure.Serialization.Kinocheck.Converters
             return response;
         }
 
-        public override void Write(Utf8JsonWriter writer, GetTrailersResponse value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, KinocheckGetTrailersResponse value, JsonSerializerOptions options)
         {
             throw new NotImplementedException();
         }

@@ -9,15 +9,15 @@ namespace ScreenSearch.Api.Controllers
     public class SearchController(ISearchService searchService) : BaseScreenSearchController
     {
         [HttpGet("movies")]
-        public async Task<IActionResult> SearchMoviesAsync([FromQuery] SearchRequest request)
+        public async Task<IActionResult> SearchMoviesAsync([FromQuery] SearchMoviesRequest request)
         {
             return Ok(await searchService.SearchMoviesAsync(request));
         }
 
         [HttpGet("shows")]
-        public async Task<IActionResult> SearchShowsAsync([FromQuery] SearchRequest request)
+        public async Task<IActionResult> SearchSeriesAsync([FromQuery] SearchSeriesRequest request)
         {
-            return Ok(await searchService.SearchShowsAsync(request));
+            return Ok(await searchService.SearchSeriesAsync(request));
         }
     }
 }

@@ -3,7 +3,19 @@
 **ScreenSearch** is a **.NET 9 Web API** that enables searching for your favourite movies and TV shows.
 
 The project was bootstrapped using a custom 'dotnet-new' template.
-This project uses [TMDB API](https://developer.themoviedb.org/) for relevant data.
+
+## About
+
+The project uses:
+- [TMDB API](https://developer.themoviedb.org/) for querying movie and TV show data.
+- [Kinocheck API](https://api.kinocheck.com/) for querying videos about a movie or a TV show.
+
+## Multilingual support
+> ❗ The API is intended to support multiple languages, although for now this is only limited to English and German due to the fact that Kinocheck API supports only these two languages.
+
+## Caching
+
+Redis is used for caching so you'll need to provide a Redis connection string before running the project.
 
 ## Architecture
 
@@ -41,9 +53,12 @@ to successfully set up your account.
 
  ```javascript
 {
+    "ConnectionStrings": {
+        "RedisConnectionString": "[YOUR_REDIS_CONNECTION_STRING]"
+    },
     "ScreenSearchSettings": {
         "TMDBAPISettings": {
-            "AccessToken": [YOUR_TMDB_ACCESS_TOKEN]
+            "AccessToken": "[YOUR_TMDB_ACCESS_TOKEN]"
         }
     }
 }
@@ -58,7 +73,7 @@ to successfully set up your account.
 
 This repository uses Github Actions for CI/CD.
 
-Currently there are two workflows defined in the  **.github/workflows** folder:
+Currently there is only a single workflow defined in the  **.github/workflows** folder:
 
 1. *build-and-test* 
     - builds and tests the application and is triggered **manually**

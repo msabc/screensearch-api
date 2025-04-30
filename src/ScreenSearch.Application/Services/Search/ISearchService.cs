@@ -1,12 +1,13 @@
 ﻿using ScreenSearch.Application.Models.Request.Search;
-using ScreenSearch.Application.Models.Response.Search;
+using ScreenSearch.Application.Models.Response;
+using ScreenSearch.Application.Models.Response.Search.Dto;
 
 namespace ScreenSearch.Application.Services.Search
 {
     public interface ISearchService
     {
-        Task<SearchResponse> SearchMoviesAsync(SearchRequest request);
+        Task<PagedResponse<SearchMoviesResponseDto>> SearchMoviesAsync(SearchMoviesRequest request);
 
-        Task<SearchResponse> SearchShowsAsync(SearchRequest request);
+        Task<PagedResponse<SearchSeriesResponseDto>> SearchSeriesAsync(SearchSeriesRequest request);
     }
 }

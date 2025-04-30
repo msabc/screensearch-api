@@ -1,4 +1,5 @@
-﻿using ScreenSearch.Configuration.Models.External;
+﻿using ScreenSearch.Configuration.Models;
+using ScreenSearch.Configuration.Models.External;
 
 namespace ScreenSearch.Configuration
 {
@@ -7,5 +8,7 @@ namespace ScreenSearch.Configuration
         public TMDBAPISettingsElement TMDBAPISettings { get; set; }
 
         public KinocheckAPISettingsElement KinocheckAPISettings { get; set; }
+
+        public CacheSettingsElement CacheSettings { get; set; }
     }
 }

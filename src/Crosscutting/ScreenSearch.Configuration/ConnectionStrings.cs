@@ -2,6 +2,6 @@
 {
     public record ConnectionStrings
     {
-        public string? ExampleConnectionString { get; set; }
+        public string RedisConnectionString { get; set; }
     }
 }

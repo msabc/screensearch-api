@@ -1,15 +1,22 @@
 ﻿using System.Net.Http.Headers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ScreenSearch.Application.Services.Detail;
+using ScreenSearch.Application.Services.LanguageResolver;
 using ScreenSearch.Application.Services.Search;
 using ScreenSearch.Application.Services.Trailer;
 using ScreenSearch.Configuration;
+using ScreenSearch.Domain.Interfaces.Caching;
+using ScreenSearch.Domain.Interfaces.Repositories;
 using ScreenSearch.Domain.Interfaces.Serialization;
 using ScreenSearch.Domain.Interfaces.Services.External.Kinocheck;
 using ScreenSearch.Domain.Interfaces.Services.External.TMDB;
+using ScreenSearch.Infrastructure.Caching;
+using ScreenSearch.Infrastructure.Repositories;
 using ScreenSearch.Infrastructure.Serialization;
 using ScreenSearch.Infrastructure.Services.External.Kinocheck;
 using ScreenSearch.Infrastructure.Services.External.TMDB;
+using StackExchange.Redis;
 
 namespace ScreenSearch.IoC
 {
@@ -19,9 +26,12 @@ namespace ScreenSearch.IoC
         {
             var settings = services.RegisterSettings(configuration);
 
-            services.RegisterDatabaseSettings(configuration);
+            var connectionStrings = services.RegisterDatabaseSettings(configuration);
 
-            services.RegisterHttpClients(settings)
+            services.RegisterCachingServices(connectionStrings)
+                    .RegisterRepositories()
+                    .RegisterHttpClients(settings)
+                    .RegisterInfrastructureServices()
                     .RegisterSerializationOptions()
                     .RegisterApplicationServices();
         }
@@ -46,9 +56,19 @@ namespace ScreenSearch.IoC
             return dbSettings;
         }
 
+        private static IServiceCollection RegisterCachingServices(this IServiceCollection services, ConnectionStrings connectionStrings)
+        {
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+            {
+                return ConnectionMultiplexer.Connect(connectionStrings.RedisConnectionString);
+            });
+
+            return services;
+        }
+
         private static IServiceCollection RegisterHttpClients(this IServiceCollection services, ScreenSearchSettings settings)
         {
-            services.AddHttpClient<ITMDBAPIService, TMDBAPIService>(client =>
+            services.AddHttpClient<ITMDBService, TMDBService>(client =>
             {
                 client.BaseAddress = new Uri(settings.TMDBAPISettings.BaseURL);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", settings.TMDBAPISettings.AccessToken);
@@ -58,6 +78,20 @@ namespace ScreenSearch.IoC
             {
                 client.BaseAddress = new Uri(settings.KinocheckAPISettings.BaseURL);
             });
+
+            return services;
+        }
+
+        private static IServiceCollection RegisterRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<ICachedDetailRepository, CachedDetailRepository>();
+
+            return services;
+        }
+
+        private static IServiceCollection RegisterInfrastructureServices(this IServiceCollection services)
+        {
+            services.AddScoped<ICacheStore, CacheStore>();
 
             return services;
         }
@@ -73,6 +107,8 @@ namespace ScreenSearch.IoC
         {
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<ITrailerService, TrailerService>();
+            services.AddScoped<IDetailService, DetailService>();
+            services.AddScoped<ILanguageResolverService, LanguageResolverService>();
 
             return services;
         }

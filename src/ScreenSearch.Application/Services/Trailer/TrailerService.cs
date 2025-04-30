@@ -1,29 +1,39 @@
 ﻿using ScreenSearch.Application.Mapper;
+using ScreenSearch.Application.Models.Enums;
 using ScreenSearch.Application.Models.Response;
-using ScreenSearch.Application.Models.Response.Trailer;
+using ScreenSearch.Application.Models.Response.Trailer.Dto;
+using ScreenSearch.Application.Services.LanguageResolver;
 using ScreenSearch.Domain.Interfaces.Services.External.Kinocheck;
 
 namespace ScreenSearch.Application.Services.Trailer
 {
-    public class TrailerService(IKinocheckService kinocheckService) : ITrailerService
+    public class TrailerService(
+        ILanguageResolverService languageResolverService,
+        IKinocheckService kinocheckService) : ITrailerService
     {
-        public async Task<IEnumerable<MovieTrailerDto>> GetTrailersAsync(int tmdbId)
+        public async Task<IEnumerable<MovieTrailerDto>> GetTrailersByIdAsync(int tmdbId, Language language)
         {
-            var response = await kinocheckService.GetTrailersAsync(tmdbId);
+            string lang = languageResolverService.ParseLanguage(language);
+
+            var response = await kinocheckService.GetTrailersAsync(tmdbId, lang);
 
             return response.Select(x => x.MapToDto());
         }
 
-        public async Task<PagedResponse<MovieTrailerDto>> GetLatestAsync(int? page)
+        public async Task<PagedResponse<MovieTrailerDto>> GetLatestAsync(Language language, int? page)
         {
-            var response = await kinocheckService.GetLatestTrailersAsync(page);
+            string lang = languageResolverService.ParseLanguage(language);
+
+            var response = await kinocheckService.GetLatestTrailersAsync(page, lang);
 
             return response.MapToPagedResponse();
         }
 
-        public async Task<PagedResponse<MovieTrailerDto>> GetTrendingAsync(int? page)
+        public async Task<PagedResponse<MovieTrailerDto>> GetTrendingAsync(Language language, int? page)
         {
-            var response = await kinocheckService.GetTrendingTrailersAsync(page);
+            string lang = languageResolverService.ParseLanguage(language);
+
+            var response = await kinocheckService.GetTrendingTrailersAsync(page, lang);
 
             return response.MapToPagedResponse();
         }

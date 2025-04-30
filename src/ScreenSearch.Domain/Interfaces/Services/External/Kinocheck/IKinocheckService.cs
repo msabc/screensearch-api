@@ -5,10 +5,14 @@ namespace ScreenSearch.Domain.Interfaces.Services.External.Kinocheck
 {
     public interface IKinocheckService
     {
-        Task<IEnumerable<KinocheckTrailerDto>> GetTrailersAsync(int tmdbId);
+        Task<KinocheckGetByIdResponse> GetMovieVideosAsync(int tmdbId, string language);
 
-        Task<GetTrailersResponse> GetLatestTrailersAsync(int? page);
+        Task<KinocheckGetByIdResponse> GetSeriesVideosAsync(int tmdbId, string language);
 
-        Task<GetTrailersResponse> GetTrendingTrailersAsync(int? page);
+        Task<IEnumerable<KinocheckVideoDto>> GetTrailersAsync(int tmdbId, string language);
+
+        Task<KinocheckGetTrailersResponse> GetLatestTrailersAsync(int? page, string language);
+
+        Task<KinocheckGetTrailersResponse> GetTrendingTrailersAsync(int? page, string language);
     }
 }

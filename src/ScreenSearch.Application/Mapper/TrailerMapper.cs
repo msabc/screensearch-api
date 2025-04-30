@@ -1,5 +1,5 @@
 ﻿using ScreenSearch.Application.Models.Response;
-using ScreenSearch.Application.Models.Response.Trailer;
+using ScreenSearch.Application.Models.Response.Trailer.Dto;
 using ScreenSearch.Domain.Models.Services.External.Kinocheck;
 using ScreenSearch.Domain.Models.Services.External.Kinocheck.Dto;
 
@@ -7,7 +7,7 @@ namespace ScreenSearch.Application.Mapper
 {
     internal static class TrailerMapper
     {
-        public static MovieTrailerDto MapToDto(this KinocheckTrailerDto response)
+        public static MovieTrailerDto MapToDto(this KinocheckVideoDto response)
         {
             return new MovieTrailerDto()
             {
@@ -26,7 +26,7 @@ namespace ScreenSearch.Application.Mapper
             };
         }
 
-        public static PagedResponse<MovieTrailerDto> MapToPagedResponse(this GetTrailersResponse response)
+        public static PagedResponse<MovieTrailerDto> MapToPagedResponse(this KinocheckGetTrailersResponse response)
         {
             return new PagedResponse<MovieTrailerDto>()
             {

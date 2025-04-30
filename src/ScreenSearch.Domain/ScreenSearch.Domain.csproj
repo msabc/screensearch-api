@@ -12,9 +12,4 @@
     <None Remove="Commands\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\Repositories\" />
-    <Folder Include="Models\Tables\" />
-  </ItemGroup>
-
 </Project>

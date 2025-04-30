@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace ScreenSearch.Infrastructure.Extensions
 {
@@ -21,8 +21,8 @@ namespace ScreenSearch.Infrastructure.Extensions
                 if (value != null)
                 {
                     // Attempt to get a DataMember attribute for custom naming
-                    var dataMemberAttribute = prop.GetCustomAttribute<DataMemberAttribute>();
-                    var key = dataMemberAttribute != null ? dataMemberAttribute.Name : prop.Name;
+                    var jsonPropertyName = prop.GetCustomAttribute<JsonPropertyNameAttribute>();
+                    var key = jsonPropertyName != null ? jsonPropertyName.Name : prop.Name;
 
                     dict[key] = value.ToString();
                 }
