@@ -1,4 +1,5 @@
 using System.Threading.RateLimiting;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.FeatureManagement;
 using Scalar.AspNetCore;
 using ScreenSearch.Api.Constants;
@@ -20,7 +21,7 @@ builder.Services.AddRouting(options =>
 
 builder.Services.AddOpenApi();
 
-var settings = builder.Services.RegisterApplicationDependencies(builder.Configuration);
+(var settings, var connectiongStrings) = builder.Services.RegisterApplicationDependencies(builder.Configuration);
 
 builder.Services.AddHostedService<TrendingJob>();
 
@@ -47,6 +48,14 @@ builder.Services.AddRateLimiter(options =>
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 });
 
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
+    {
+        options.ConnectionString = connectiongStrings.ApplicationInsightsConnectionString;
+    });
+}
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -54,7 +63,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference(options =>
     {
-        options.Theme = ScalarTheme.DeepSpace;
+        options.Theme = ScalarTheme.Kepler;
     });
 }
 

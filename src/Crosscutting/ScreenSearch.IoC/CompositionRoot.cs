@@ -23,7 +23,7 @@ namespace ScreenSearch.IoC
 {
     public static class CompositionRoot
     {
-        public static ScreenSearchSettings RegisterApplicationDependencies(this IServiceCollection services, IConfiguration configuration)
+        public static (ScreenSearchSettings, ConnectionStrings) RegisterApplicationDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             var settings = services.RegisterSettings(configuration);
 
@@ -36,7 +36,7 @@ namespace ScreenSearch.IoC
                     .RegisterSerializationOptions()
                     .RegisterApplicationServices();
 
-            return settings;
+            return (settings, connectionStrings);
         }
 
         private static ScreenSearchSettings RegisterSettings(this IServiceCollection services, IConfiguration configuration)
