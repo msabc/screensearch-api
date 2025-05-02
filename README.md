@@ -13,6 +13,10 @@ The project uses:
 ## Multilingual support
 > ❗ The API is intended to support multiple languages, although for now this is only limited to English and German due to the fact that Kinocheck API supports only these two languages.
 
+## Rate limiting
+- ScreenSearch.Api uses a rate limiter in sync with the rules of [TMDB API rate limiting](https://developer.themoviedb.org/docs/rate-limiting).
+- Rate limiting is fully configurable through application settings.
+
 ## Caching
 
 Redis is used for caching so you'll need to provide a Redis connection string before running the project.
@@ -54,7 +58,8 @@ to successfully set up your account.
  ```javascript
 {
     "ConnectionStrings": {
-        "RedisConnectionString": "[YOUR_REDIS_CONNECTION_STRING]"
+        "RedisConnectionString": "[YOUR_REDIS_CONNECTION_STRING]",
+        "ApplicationInsightsConnectionString": "[YOUR_APPLICATION_INSIGHTS_CONNECTION_STRING]"
     },
     "ScreenSearchSettings": {
         "TMDBAPISettings": {
@@ -77,3 +82,82 @@ Currently there is only a single workflow defined in the  **.github/workflows** 
 
 1. *build-and-test* 
     - builds and tests the application and is triggered **manually**
+
+## Security
+
+<table style="font-family: Arial, sans-serif;">
+  <thead>
+    <tr style="background-color: #f2f2f2;">
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left;"><a href="https://owasp.org/Top10" target="_blank">OWASP Top 10 Threats 2021 </a></th>
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Mitigation Strategies</th>
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px;">Broken Access Control</td>
+      <td style="border: 1px solid #ddd; padding: 8px;">
+        <p>ScreenSearch.Api doesn't store any user data nor does it support any data modification via HTTP verbs like POST, PUT and DELETE, therefore no access control was needed.</p>
+      </td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px;">Cryptographic Failures</td>
+      <td style="border: 1px solid #ddd; padding: 8px;">
+        <p>HTTPS redirection is used.</p>
+      </td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px;">Injection</td>
+      <td style="border: 1px solid #ddd; padding: 8px;">
+        <p>No sensitive data is stored server side. The data that is cached is not open to user manipulation (no parameters are used).</p>
+      </td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px;">Insecure Design</td>
+      <td style="border: 1px solid #ddd; padding: 8px;">
+        <p>No threat modeling is currently implemented.</p>
+        <p>The application would need to contain unit and integration tests as well as code coverage.</p>
+        <p>The application currently depends heavily on the data sources of outside APIs (for now) which could easily be a threat regarding DoS.</p>
+      </td>
+      <td>❌</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px;">Security Misconfiguration</td>
+      <td style="border: 1px solid #ddd; padding: 8px;">
+        <p>The application shouldn't be susceptible to misconfiguration at the moment, but it would require a certain effort in order to fully comply, eg. implementing a reverse proxy, setting up CORS...</p>
+      </td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px;">Vulnerable and Outdated Components</td>
+      <td style="border: 1px solid #ddd; padding: 8px;">
+        <p>All packages are updated to their latest versions, latest version of .NET is used.</p>
+        <p>A tool like [Snyk](https://github.com/snyk) could be used to automate dependency checks in order to fully comply.</p>
+      </td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px;">Identification and Authentication Failures</td>
+      <td style="border: 1px solid #ddd; padding: 8px;">
+        <p>ScreenSearch does not implement identification or authentication as it is just an API for public data querying, not modification.</p>
+      </td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px;">Software and Data Integrity Failures</td>
+      <td style="border: 1px solid #ddd; padding: 8px;">
+        <p>A Github Action is set up which builds and tests the project, although for deployment I would add another action which creates an artifact for production.</p>
+      </td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px;">Security Logging and Monitoring Failures</td>
+      <td style="border: 1px solid #ddd; padding: 8px;">
+        <p>Application Insights are used for logging.</p>
+      <td>✅</td>
+    </tr>
+  </tbody>
+</table>
