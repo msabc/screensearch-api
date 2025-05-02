@@ -13,5 +13,9 @@
         public required string GetMovieByIdPath { get; set; }
 
         public required string GetShowByIdPath { get; set; }
+
+        public required string GetTrendingMoviesPath { get; set; }
+
+        public required string GetTrendingSeriesPath { get; set; }
     }
 }

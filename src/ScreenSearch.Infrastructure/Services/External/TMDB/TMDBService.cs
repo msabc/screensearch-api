@@ -98,5 +98,37 @@ namespace ScreenSearch.Infrastructure.Services.External.TMDB
                 throw;
             }
         }
+
+        public async Task<TMDBPagedResponse<TMDBSearchMoviesResponseDto>> GetTrendingMoviesAsync(string language)
+        {
+            try
+            {
+
+                string requestUri = $"{_settings.TMDBAPISettings.GetTrendingMoviesPath}/day&{QueryParameterNames.Language}=en";
+
+                return await httpClient.GetFromJsonAsync<TMDBPagedResponse<TMDBSearchMoviesResponseDto>>(requestUri);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{nameof(TMDBService)}.{nameof(GetTrendingMoviesAsync)} error occurred: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<TMDBPagedResponse<TMDBSearchSeriesResponseDto>> GetTrendingSeriesAsync(string language)
+        {
+            try
+            {
+
+                string requestUri = $"{_settings.TMDBAPISettings.GetTrendingSeriesPath}/day&{QueryParameterNames.Language}=en";
+
+                return await httpClient.GetFromJsonAsync<TMDBPagedResponse<TMDBSearchSeriesResponseDto>>(requestUri);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{nameof(TMDBService)}.{nameof(GetTrendingSeriesAsync)} error occurred: {ex.Message}");
+                throw;
+            }
+        }
     }
 }

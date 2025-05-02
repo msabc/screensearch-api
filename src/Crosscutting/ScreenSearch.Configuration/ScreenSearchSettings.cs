@@ -10,5 +10,7 @@ namespace ScreenSearch.Configuration
         public KinocheckAPISettingsElement KinocheckAPISettings { get; set; }
 
         public CacheSettingsElement CacheSettings { get; set; }
+
+        public TrendingJobSettingsElement TrendingJobSettings { get; set; }
     }
 }

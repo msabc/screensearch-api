@@ -85,6 +85,26 @@ namespace ScreenSearch.Infrastructure.Repositories
             }
         }
 
+        public async Task SaveMultipleMovieMetadataRecordsAsync(string language, List<TMDBSearchMoviesResponseDto> metadataRecords)
+        {
+            try
+            {
+                Dictionary<string, string> movieMetadataRecordsDictionary = metadataRecords.ToDictionary(
+                    metadataRecord => $"{CachePrefixes.MovieMetadataPrefix}:{metadataRecord.Id}:{language}",
+                    metadataRecord => JsonSerializer.Serialize(metadataRecord)
+                );
+
+                await cacheStore.SetValuesAsync(
+                    movieMetadataRecordsDictionary,
+                    TimeSpan.FromMinutes(_cacheExpirationInMinutes)
+                );
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"An error occurred in {nameof(SaveMultipleMovieMetadataRecordsAsync)}: {ex.Message}");
+            }
+        }
+
         public async Task SaveMovieTrailersAsync(int tmdbId, string language, List<KinocheckVideoDto> trailers)
         {
             try
@@ -114,6 +134,26 @@ namespace ScreenSearch.Infrastructure.Repositories
             catch (Exception ex)
             {
                 logger.LogError($"An error occurred in {nameof(SaveSeriesMetadataAsync)} for {nameof(tmdbId)} {tmdbId}. {ex.Message}");
+            }
+        }
+
+        public async Task SaveMultipleSeriesMetadataRecordsAsync(string language, List<TMDBSearchSeriesResponseDto> metadataRecords)
+        {
+            try
+            {
+                Dictionary<string, string> seriesMetadataRecordsDictionary = metadataRecords.ToDictionary(
+                    metadataRecord => $"{CachePrefixes.SeriesMetadataPrefix}:{metadataRecord.Id}:{language}",
+                    metadataRecord => JsonSerializer.Serialize(metadataRecord)
+                );
+
+                await cacheStore.SetValuesAsync(
+                    seriesMetadataRecordsDictionary,
+                    TimeSpan.FromMinutes(_cacheExpirationInMinutes)
+                );
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"An error occurred in {nameof(SaveMultipleSeriesMetadataRecordsAsync)}: {ex.Message}");
             }
         }
 

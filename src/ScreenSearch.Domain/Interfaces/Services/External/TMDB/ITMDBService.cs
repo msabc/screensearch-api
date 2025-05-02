@@ -14,5 +14,9 @@ namespace ScreenSearch.Domain.Interfaces.Services.External.TMDB
         Task<TMDBSearchMoviesResponseDto> GetMovieDetailsByIdAsync(int tmdbId, string language);
 
         Task<TMDBGetShowDetailsResponse> GetSeriesDetailsByIdAsync(int tmdbId, string language);
+
+        Task<TMDBPagedResponse<TMDBSearchMoviesResponseDto>> GetTrendingMoviesAsync(string language);
+
+        Task<TMDBPagedResponse<TMDBSearchSeriesResponseDto>> GetTrendingSeriesAsync(string language);
     }
 }

@@ -6,6 +6,6 @@
 
         Task SetValueAsync(string key, string value, TimeSpan? expiry);
 
-        Task RemoveValueAsync(string key);
+        Task SetValuesAsync(IDictionary<string, string> values, TimeSpan? expiry);
     }
 }

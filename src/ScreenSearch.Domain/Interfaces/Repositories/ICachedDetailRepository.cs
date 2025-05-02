@@ -13,9 +13,13 @@ namespace ScreenSearch.Domain.Interfaces.Repositories
 
         Task SaveMovieMetadataAsync(int tmdbId, string language, TMDBSearchMoviesResponseDto metadata);
 
+        Task SaveMultipleMovieMetadataRecordsAsync(string language, List<TMDBSearchMoviesResponseDto> metadataRecords);
+
         Task SaveMovieTrailersAsync(int tmdbId, string language, List<KinocheckVideoDto> trailers);
 
         Task SaveSeriesMetadataAsync(int tmdbId, string language, TMDBGetShowDetailsResponse metadata);
+
+        Task SaveMultipleSeriesMetadataRecordsAsync(string language, List<TMDBSearchSeriesResponseDto> metadataRecords);
 
         Task SaveSeriesTrailersAsync(int tmdbId, string language, List<KinocheckVideoDto> trailers);
     }

@@ -1,5 +1,7 @@
+using Microsoft.FeatureManagement;
 using Scalar.AspNetCore;
 using ScreenSearch.Api.Filters;
+using ScreenSearch.Api.Jobs;
 using ScreenSearch.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,11 @@ builder.Services.AddRouting(options =>
 builder.Services.AddOpenApi();
 
 builder.Services.RegisterApplicationDependencies(builder.Configuration);
+
+// background jobs
+builder.Services.AddHostedService<TrendingJob>();
+
+builder.Services.AddFeatureManagement();
 
 var app = builder.Build();
 

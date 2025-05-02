@@ -5,6 +5,7 @@ using ScreenSearch.Application.Services.Detail;
 using ScreenSearch.Application.Services.LanguageResolver;
 using ScreenSearch.Application.Services.Search;
 using ScreenSearch.Application.Services.Trailer;
+using ScreenSearch.Application.Services.Trending;
 using ScreenSearch.Configuration;
 using ScreenSearch.Domain.Interfaces.Caching;
 using ScreenSearch.Domain.Interfaces.Repositories;
@@ -108,6 +109,7 @@ namespace ScreenSearch.IoC
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<ITrailerService, TrailerService>();
             services.AddScoped<IDetailService, DetailService>();
+            services.AddScoped<ITrendingService, TrendingService>();
             services.AddScoped<ILanguageResolverService, LanguageResolverService>();
 
             return services;

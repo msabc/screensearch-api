@@ -17,14 +17,22 @@ namespace ScreenSearch.Infrastructure.Caching
             return redisValue.IsNullOrEmpty ? null : redisValue.ToString();
         }
 
-        public async Task RemoveValueAsync(string key)
-        {
-            await _database.KeyDeleteAsync(key);
-        }
-
         public async Task SetValueAsync(string key, string value, TimeSpan? expiry = null)
         {
             await _database.StringSetAsync(key, value, expiry);
+        }
+
+        public async Task SetValuesAsync(IDictionary<string, string> values, TimeSpan? expiry)
+        {
+            var batch = _database.CreateBatch();
+            var tasks = new List<Task>();
+
+            foreach (var value in values)
+                tasks.Add(batch.StringSetAsync(value.Key, value.Value, expiry));
+
+            batch.Execute();
+            
+            await Task.WhenAll(tasks);
         }
     }
 }
