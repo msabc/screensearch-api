@@ -1,5 +1,7 @@
+using System.Threading.RateLimiting;
 using Microsoft.FeatureManagement;
 using Scalar.AspNetCore;
+using ScreenSearch.Api.Constants;
 using ScreenSearch.Api.Filters;
 using ScreenSearch.Api.Jobs;
 using ScreenSearch.IoC;
@@ -18,12 +20,32 @@ builder.Services.AddRouting(options =>
 
 builder.Services.AddOpenApi();
 
-builder.Services.RegisterApplicationDependencies(builder.Configuration);
+var settings = builder.Services.RegisterApplicationDependencies(builder.Configuration);
 
-// background jobs
 builder.Services.AddHostedService<TrendingJob>();
 
 builder.Services.AddFeatureManagement();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy(RateLimitPolicies.TMDBPolicy, context =>
+    {
+        context.Items["RateLimiterPolicyName"] = "RemoteIpPolicy";
+
+        return RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: "tmdb",
+                    factory: key => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = settings.RateLimitSettings.TMDB.NumberOfRequestsPermitted,
+                        Window = TimeSpan.FromSeconds(settings.RateLimitSettings.TMDB.WindowSizeInSeconds),
+                        QueueLimit = 0,
+                        AutoReplenishment = true
+                    }
+        );
+    });
+
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
 
 var app = builder.Build();
 
@@ -38,9 +60,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-
-app.UseAuthorization();
+app.UseRateLimiter();
 
 app.MapControllers();
 

@@ -1,5 +1,6 @@
 ﻿using ScreenSearch.Configuration.Models;
 using ScreenSearch.Configuration.Models.External;
+using ScreenSearch.Configuration.Models.Jobs;
 
 namespace ScreenSearch.Configuration
 {
@@ -12,5 +13,7 @@ namespace ScreenSearch.Configuration
         public CacheSettingsElement CacheSettings { get; set; }
 
         public TrendingJobSettingsElement TrendingJobSettings { get; set; }
+
+        public RateLimitSettingsElement RateLimitSettings { get; set; }
     }
 }

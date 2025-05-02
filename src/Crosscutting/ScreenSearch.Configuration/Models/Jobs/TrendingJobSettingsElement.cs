@@ -1,4 +1,4 @@
-﻿namespace ScreenSearch.Configuration.Models
+﻿namespace ScreenSearch.Configuration.Models.Jobs
 {
     public class TrendingJobSettingsElement
     {

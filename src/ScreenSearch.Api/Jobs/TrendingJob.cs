@@ -3,7 +3,7 @@ using Microsoft.FeatureManagement;
 using ScreenSearch.Application.Services.Trending;
 using ScreenSearch.Configuration;
 using ScreenSearch.Configuration.Enums;
-using ScreenSearch.Configuration.Models;
+using ScreenSearch.Configuration.Models.Jobs;
 
 namespace ScreenSearch.Api.Jobs
 {
