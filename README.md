@@ -5,7 +5,6 @@
 The project was bootstrapped using a custom 'dotnet-new' template.
 
 ## About
-
 The project uses:
 - [TMDB API](https://developer.themoviedb.org/) for querying movie and TV show data.
 - [Kinocheck API](https://api.kinocheck.com/) for querying videos about a movie or a TV show.
@@ -17,12 +16,16 @@ The project uses:
 - ScreenSearch.Api uses a rate limiter in sync with the rules of [TMDB API rate limiting](https://developer.themoviedb.org/docs/rate-limiting).
 - Rate limiting is fully configurable through application settings.
 
-## Caching
+## Background jobs
+- ScreenSearch.Api uses a background job for trending movies and tv shows:
+    - the job is controlled using a feature flag called **'TrendingJobEnabled'**
+    - when this feature flag is enabled, TMDB API is periodically called for caching data of trending movies and TV shows
+    - the job execution parameters are fully configurable via application settings
 
+## Caching
 Redis is used for caching so you'll need to provide a Redis connection string before running the project.
 
 ## Architecture
-
 The API implements [**Domain-driven design**](https://en.wikipedia.org/wiki/Domain-driven_design)
 and is divided into several projects (layers):
 
@@ -42,7 +45,6 @@ and is divided into several projects (layers):
     - contains tests
 
 ## Run the project locally
-
 **Note:**
 > Before running the project, you will need to create an account at [TMDB](https://developer.themoviedb.org). Read their [docs](https://developer.themoviedb.org/docs/getting-started) in order
 to successfully set up your account.
@@ -75,7 +77,6 @@ to successfully set up your account.
 5. Run the project
 
 ## CI/CD
-
 This repository uses Github Actions for CI/CD.
 
 Currently there is only a single workflow defined in the  **.github/workflows** folder:
@@ -84,7 +85,6 @@ Currently there is only a single workflow defined in the  **.github/workflows** 
     - builds and tests the application and is triggered **manually**
 
 ## Security
-
 <table style="font-family: Arial, sans-serif;">
   <thead>
     <tr style="background-color: #f2f2f2;">
