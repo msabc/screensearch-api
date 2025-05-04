@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using ScreenSearch.Api.Constants;
@@ -5,9 +6,10 @@ using ScreenSearch.Api.Controllers.Base;
 using ScreenSearch.Application.Models.Enums;
 using ScreenSearch.Application.Services.Detail;
 
-namespace ScreenSearch.Api.Controllers
+namespace ScreenSearch.Api.Controllers.V1
 {
-    [Route("[controller]")]
+    [ApiVersion(1.0)]
+    [Route("v{version:apiVersion}/[controller]")]
     [EnableRateLimiting(RateLimitPolicies.TMDBPolicy)]
     public class DetailController(IDetailService detailService) : BaseScreenSearchController
     {

@@ -1,6 +1,5 @@
 ﻿<Project>
     <ItemGroup>
         <PackageReference Include="StackExchange.Redis" Version="2.8.31" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.4" />
     </ItemGroup>
 </Project>

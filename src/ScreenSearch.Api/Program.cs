@@ -1,8 +1,12 @@
 using System.Threading.RateLimiting;
+using Asp.Versioning;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;
 using Scalar.AspNetCore;
 using ScreenSearch.Api.Constants;
+using ScreenSearch.Api.Conventions;
 using ScreenSearch.Api.Filters;
 using ScreenSearch.Api.Jobs;
 using ScreenSearch.IoC;
@@ -12,6 +16,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ApiExceptionFilterAttribute>();
+    options.Conventions.Insert(0, new GlobalRoutePrefixConvention(new RouteAttribute("api")));
+});
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
 });
 
 builder.Services.AddRouting(options =>
