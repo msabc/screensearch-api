@@ -6,7 +6,7 @@ namespace ScreenSearch.Application.Services.Trending
 {
     public class TrendingService(
         ITMDBService tmdbService,
-        ICachedDetailRepository cachedDetailRepository,
+        IDetailRepository cachedDetailRepository,
         ILogger<TrendingService> logger) : ITrendingService
     {
         public async Task SaveTrendingDataAsync(string language)

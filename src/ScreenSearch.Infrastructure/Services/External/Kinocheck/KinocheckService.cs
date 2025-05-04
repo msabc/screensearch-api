@@ -2,6 +2,7 @@
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 using ScreenSearch.Configuration;
+using ScreenSearch.Configuration.Models.External;
 using ScreenSearch.Domain.Interfaces.Serialization;
 using ScreenSearch.Domain.Interfaces.Services.External.Kinocheck;
 using ScreenSearch.Domain.Models.Services.External.Kinocheck;
@@ -10,42 +11,43 @@ using ScreenSearch.Domain.Models.Services.External.Kinocheck.Dto;
 namespace ScreenSearch.Infrastructure.Services.External.Kinocheck
 {
     public class KinocheckService(
-        IKinocheckSerializationOptions jsonCaseInsensitiveSerializationOptions,
+        IKinocheckSerializationOptions kinocheckSerializationOptions,
         IOptions<ScreenSearchSettings> screenSearchOptions,
         HttpClient httpClient) : IKinocheckService
     {
-        private readonly ScreenSearchSettings _settings = screenSearchOptions.Value;
+        private static readonly string _defaultLanguage = "en";
+        private readonly KinocheckAPISettingsElement _apiSettings = screenSearchOptions.Value.KinocheckAPISettings;
 
-        public async Task<KinocheckGetByIdResponse> GetMovieVideosAsync(int tmdbId, string language)
+        public async Task<KinocheckGetByIdResponse> GetMovieVideosAsync(int tmdbId)
         {
-            string queryParameters = GetQueryParameters(tmdbId, language);
+            string queryParameters = GetQueryParameters(tmdbId);
 
-            return await httpClient.GetFromJsonAsync<KinocheckGetByIdResponse>($"{_settings.KinocheckAPISettings.GetMovieVideosPath}?{queryParameters}");
+            return await httpClient.GetFromJsonAsync<KinocheckGetByIdResponse>($"{_apiSettings.GetMovieVideosPath}?{queryParameters}");
         }
 
-        public async Task<KinocheckGetByIdResponse> GetSeriesVideosAsync(int tmdbId, string language)
+        public async Task<KinocheckGetByIdResponse> GetSeriesVideosAsync(int tmdbId)
         {
-            string queryParameters = GetQueryParameters(tmdbId, language);
+            string queryParameters = GetQueryParameters(tmdbId);
 
-            return await httpClient.GetFromJsonAsync<KinocheckGetByIdResponse>($"{_settings.KinocheckAPISettings.GetSeriesVideosPath}?{queryParameters}");
+            return await httpClient.GetFromJsonAsync<KinocheckGetByIdResponse>($"{_apiSettings.GetSeriesVideosPath}?{queryParameters}");
         }
 
-        public async Task<IEnumerable<KinocheckVideoDto>> GetTrailersAsync(int tmdbId, string language)
+        public async Task<IEnumerable<KinocheckVideoDto>> GetTrailersAsync(int tmdbId)
         {
-            string requestUri = $"{_settings.KinocheckAPISettings.GetLatestTrailersPath}?tmdb_id={tmdbId}";
+            string requestUri = $"{_apiSettings.GetLatestTrailersPath}?{QueryParameterNames.TMDBId}={tmdbId}";
 
             return await httpClient.GetFromJsonAsync<IEnumerable<KinocheckVideoDto>>(requestUri);
         }
 
-        public async Task<KinocheckGetTrailersResponse> GetLatestTrailersAsync(int? page, string language) => 
-            await GetAsync(_settings.KinocheckAPISettings.GetLatestTrailersPath, page, language);
+        public async Task<KinocheckGetTrailersResponse> GetLatestTrailersAsync(int? page) => 
+            await GetAsync(_apiSettings.GetLatestTrailersPath, page);
 
-        public async Task<KinocheckGetTrailersResponse> GetTrendingTrailersAsync(int? page, string language) =>
-            await GetAsync(_settings.KinocheckAPISettings.GetTrendingTrailersPath, page, language);
+        public async Task<KinocheckGetTrailersResponse> GetTrendingTrailersAsync(int? page) =>
+            await GetAsync(_apiSettings.GetTrendingTrailersPath, page);
 
-        private async Task<KinocheckGetTrailersResponse> GetAsync(string url, int? page, string language)
+        private async Task<KinocheckGetTrailersResponse> GetAsync(string url, int? page)
         {
-            string requestUri = GetUrlWithQueryParameters(url, page, language);
+            string requestUri = GetUrlWithQueryParameters(url, page);
 
             var response = await httpClient.GetAsync(requestUri);
 
@@ -53,12 +55,17 @@ namespace ScreenSearch.Infrastructure.Services.External.Kinocheck
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<KinocheckGetTrailersResponse>(jsonResponse, jsonCaseInsensitiveSerializationOptions.GetOptions());
+            return JsonSerializer.Deserialize<KinocheckGetTrailersResponse>(
+                jsonResponse, 
+                kinocheckSerializationOptions.GetOptions()
+            );
         }
 
-        private static string GetUrlWithQueryParameters(string url, int? page, string language) => 
-            page.HasValue ? $"{url}?{QueryParameterNames.Language}={language}&{QueryParameterNames.Page}={page}" : $"{url}?{QueryParameterNames.Language}={language}";
+        private static string GetUrlWithQueryParameters(string url, int? page) => 
+            page.HasValue ? 
+            $"{url}?{QueryParameterNames.Language}={_defaultLanguage}&{QueryParameterNames.Page}={page}" : 
+            $"{url}?{QueryParameterNames.Language}={_defaultLanguage}";
 
-        private static string GetQueryParameters(int tmdbId, string language) => $"{QueryParameterNames.TMDBId}={tmdbId}&{QueryParameterNames.Language}={language}";
+        private static string GetQueryParameters(int tmdbId) => $"{QueryParameterNames.TMDBId}={tmdbId}&{QueryParameterNames.Language}={_defaultLanguage}";
     }
 }

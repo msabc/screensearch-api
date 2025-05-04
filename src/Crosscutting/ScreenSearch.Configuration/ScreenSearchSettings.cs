@@ -14,6 +14,10 @@ namespace ScreenSearch.Configuration
 
         public TrendingJobSettingsElement TrendingJobSettings { get; set; }
 
+        public SupportedLanguagesJobSettingsElement SupportedLanguagesJobSettings { get; set; }
+
         public RateLimitSettingsElement RateLimitSettings { get; set; }
+
+        public LanguageSettingsElement LanguageSettings { get; set; }
     }
 }

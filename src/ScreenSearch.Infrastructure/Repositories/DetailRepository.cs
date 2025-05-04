@@ -12,10 +12,10 @@ using ScreenSearch.Infrastructure.Constants;
 
 namespace ScreenSearch.Infrastructure.Repositories
 {
-    public class CachedDetailRepository(
+    public class DetailRepository(
         ICacheStore cacheStore,
-        ILogger<CachedDetailRepository> logger,
-        IOptions<ScreenSearchSettings> screenSearchOptions) : ICachedDetailRepository
+        ILogger<DetailRepository> logger,
+        IOptions<ScreenSearchSettings> screenSearchOptions) : IDetailRepository
     {
         private readonly int _cacheExpirationInMinutes = screenSearchOptions.Value.CacheSettings.CacheExpirationInMinutes;
 

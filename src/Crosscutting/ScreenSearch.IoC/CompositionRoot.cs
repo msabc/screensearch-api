@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ScreenSearch.Application.Services.Detail;
 using ScreenSearch.Application.Services.LanguageResolver;
 using ScreenSearch.Application.Services.Search;
+using ScreenSearch.Application.Services.SupportedLanguage;
 using ScreenSearch.Application.Services.Trailer;
 using ScreenSearch.Application.Services.Trending;
 using ScreenSearch.Configuration;
@@ -87,7 +88,8 @@ namespace ScreenSearch.IoC
 
         private static IServiceCollection RegisterRepositories(this IServiceCollection services)
         {
-            services.AddScoped<ICachedDetailRepository, CachedDetailRepository>();
+            services.AddScoped<IDetailRepository, DetailRepository>();
+            services.AddScoped<ISupportedLanguageRepository, SupportedLanguageRepository>();
 
             return services;
         }
@@ -113,6 +115,7 @@ namespace ScreenSearch.IoC
             services.AddScoped<IDetailService, DetailService>();
             services.AddScoped<ITrendingService, TrendingService>();
             services.AddScoped<ILanguageResolverService, LanguageResolverService>();
+            services.AddScoped<ISupportedLanguageService, SupportedLanguageService>();
 
             return services;
         }

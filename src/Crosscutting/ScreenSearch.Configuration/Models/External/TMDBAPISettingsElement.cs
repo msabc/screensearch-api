@@ -17,5 +17,7 @@
         public required string GetTrendingMoviesPath { get; set; }
 
         public required string GetTrendingSeriesPath { get; set; }
+
+        public required string GetLanguagesPath { get; set; }
     }
 }

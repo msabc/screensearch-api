@@ -1,7 +1,6 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using ScreenSearch.Api.Controllers.Base;
-using ScreenSearch.Application.Models.Enums;
 using ScreenSearch.Application.Services.Trailer;
 
 namespace ScreenSearch.Api.Controllers.V1
@@ -11,21 +10,21 @@ namespace ScreenSearch.Api.Controllers.V1
     public class TrailerController(ITrailerService trailerService) : BaseScreenSearchController
     {
         [HttpGet("{tmdbId}")]
-        public async Task<IActionResult> GetTrailerByIdAsync(int tmdbId, Language langage)
+        public async Task<IActionResult> GetTrailerByIdAsync(int tmdbId)
         {
-            return Ok(await trailerService.GetTrailersByIdAsync(tmdbId, langage));
+            return Ok(await trailerService.GetTrailersByIdAsync(tmdbId));
         }
 
         [HttpGet("latest")]
-        public async Task<IActionResult> GetLatestAsync(Language langage, int? page)
+        public async Task<IActionResult> GetLatestAsync(int? page)
         {
-            return Ok(await trailerService.GetLatestAsync(langage, page));
+            return Ok(await trailerService.GetLatestAsync(page));
         }
 
         [HttpGet("trending")]
-        public async Task<IActionResult> GetTrendingAsync(Language langage, int? page)
+        public async Task<IActionResult> GetTrendingAsync(int? page)
         {
-            return Ok(await trailerService.GetTrendingAsync(langage, page));
+            return Ok(await trailerService.GetTrendingAsync(page));
         }
     }
 }

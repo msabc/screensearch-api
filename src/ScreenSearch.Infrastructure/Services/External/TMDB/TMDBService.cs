@@ -1,15 +1,16 @@
-﻿using System.Net;
-using System.Net.Http.Json;
-using System.Text;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ScreenSearch.Configuration;
 using ScreenSearch.Domain.Interfaces.Services.External.TMDB;
 using ScreenSearch.Domain.Models.Services.External.TMDB.Details;
+using ScreenSearch.Domain.Models.Services.External.TMDB.Languages;
 using ScreenSearch.Domain.Models.Services.External.TMDB.Search.Request;
 using ScreenSearch.Domain.Models.Services.External.TMDB.Search.Response;
 using ScreenSearch.Domain.Models.Services.External.TMDB.Search.Response.Dto;
 using ScreenSearch.Infrastructure.Extensions;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text;
 
 namespace ScreenSearch.Infrastructure.Services.External.TMDB
 {
@@ -127,6 +128,19 @@ namespace ScreenSearch.Infrastructure.Services.External.TMDB
             catch (Exception ex)
             {
                 logger.LogError($"{nameof(TMDBService)}.{nameof(GetTrendingSeriesAsync)} error occurred: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<List<TMDBLanguage>> GetLanguagesAsync()
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<List<TMDBLanguage>>(_settings.TMDBAPISettings.GetLanguagesPath);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{nameof(TMDBService)}.{nameof(GetLanguagesAsync)} error occurred: {ex.Message}");
                 throw;
             }
         }

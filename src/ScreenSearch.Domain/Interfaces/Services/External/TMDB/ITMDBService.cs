@@ -1,4 +1,5 @@
 ﻿using ScreenSearch.Domain.Models.Services.External.TMDB.Details;
+using ScreenSearch.Domain.Models.Services.External.TMDB.Languages;
 using ScreenSearch.Domain.Models.Services.External.TMDB.Search.Request;
 using ScreenSearch.Domain.Models.Services.External.TMDB.Search.Response;
 using ScreenSearch.Domain.Models.Services.External.TMDB.Search.Response.Dto;
@@ -18,5 +19,7 @@ namespace ScreenSearch.Domain.Interfaces.Services.External.TMDB
         Task<TMDBPagedResponse<TMDBSearchMoviesResponseDto>> GetTrendingMoviesAsync(string language);
 
         Task<TMDBPagedResponse<TMDBSearchSeriesResponseDto>> GetTrendingSeriesAsync(string language);
+
+        Task<List<TMDBLanguage>> GetLanguagesAsync();
     }
 }

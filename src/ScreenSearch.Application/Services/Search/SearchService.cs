@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using ScreenSearch.Application.Mapper;
+﻿using ScreenSearch.Application.Mapper;
 using ScreenSearch.Application.Models.Request.Search;
 using ScreenSearch.Application.Models.Response;
-using ScreenSearch.Application.Models.Response.Search;
 using ScreenSearch.Application.Models.Response.Search.Dto;
 using ScreenSearch.Domain.Interfaces.Services.External.TMDB;
 

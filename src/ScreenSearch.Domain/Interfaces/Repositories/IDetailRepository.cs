@@ -5,7 +5,7 @@ using ScreenSearch.Domain.Models.Services.External.TMDB.Search.Response.Dto;
 
 namespace ScreenSearch.Domain.Interfaces.Repositories
 {
-    public interface ICachedDetailRepository
+    public interface IDetailRepository
     {
         Task<CachedMovieDetails> GetMovieDetailsAsync(int tmdbId, string language);
 

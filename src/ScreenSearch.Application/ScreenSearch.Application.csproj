@@ -14,9 +14,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Crosscutting\ScreenSearch.Configuration\ScreenSearch.Configuration.csproj" />
     <ProjectReference Include="..\ScreenSearch.Domain\ScreenSearch.Domain.csproj" />
   </ItemGroup>
 

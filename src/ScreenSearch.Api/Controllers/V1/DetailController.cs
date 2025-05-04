@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using ScreenSearch.Api.Constants;
 using ScreenSearch.Api.Controllers.Base;
-using ScreenSearch.Application.Models.Enums;
 using ScreenSearch.Application.Services.Detail;
 
 namespace ScreenSearch.Api.Controllers.V1
@@ -14,15 +13,15 @@ namespace ScreenSearch.Api.Controllers.V1
     public class DetailController(IDetailService detailService) : BaseScreenSearchController
     {
         [HttpGet("movies/{tmdbId}")]
-        public async Task<IActionResult> GetMovieDetailsByIdAsync(int tmdbId, Language language)
+        public async Task<IActionResult> GetMovieDetailsByIdAsync(int tmdbId)
         {
-            return Ok(await detailService.GetMovieDetailsByIdAsync(tmdbId, language));
+            return Ok(await detailService.GetMovieDetailsByIdAsync(tmdbId));
         }
 
         [HttpGet("series/{tmdbId}")]
-        public async Task<IActionResult> GetShowDetailsByIdAsync(int tmdbId, Language language)
+        public async Task<IActionResult> GetShowDetailsByIdAsync(int tmdbId)
         {
-            return Ok(await detailService.GetSeriesDetailsByIdAsync(tmdbId, language));
+            return Ok(await detailService.GetSeriesDetailsByIdAsync(tmdbId));
         }
     }
 }

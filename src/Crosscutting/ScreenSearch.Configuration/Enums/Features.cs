@@ -2,6 +2,7 @@
 {
     public enum Features
     {
-        TrendingJobEnabled
+        TrendingJobEnabled,
+        SupportedLanguagesJobEnabled
     }
 }
