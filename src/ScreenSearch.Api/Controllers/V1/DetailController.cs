@@ -1,7 +1,5 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
-using ScreenSearch.Api.Constants;
 using ScreenSearch.Api.Controllers.Base;
 using ScreenSearch.Application.Services.Detail;
 
@@ -9,19 +7,18 @@ namespace ScreenSearch.Api.Controllers.V1
 {
     [ApiVersion(1.0)]
     [Route("v{version:apiVersion}/[controller]")]
-    [EnableRateLimiting(RateLimitPolicies.TMDBPolicy)]
     public class DetailController(IDetailService detailService) : BaseScreenSearchController
     {
         [HttpGet("movies/{tmdbId}")]
-        public async Task<IActionResult> GetMovieDetailsByIdAsync(int tmdbId)
+        public async Task<IActionResult> GetMovieDetailsByIdAsync([FromRoute] int tmdbId, [FromQuery] string? language)
         {
-            return Ok(await detailService.GetMovieDetailsByIdAsync(tmdbId));
+            return Ok(await detailService.GetMovieDetailsByIdAsync(tmdbId, language));
         }
 
         [HttpGet("series/{tmdbId}")]
-        public async Task<IActionResult> GetShowDetailsByIdAsync(int tmdbId)
+        public async Task<IActionResult> GetShowDetailsByIdAsync([FromRoute]  int tmdbId, [FromQuery] string? language)
         {
-            return Ok(await detailService.GetSeriesDetailsByIdAsync(tmdbId));
+            return Ok(await detailService.GetSeriesDetailsByIdAsync(tmdbId, language));
         }
     }
 }

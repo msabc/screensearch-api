@@ -18,35 +18,10 @@ namespace ScreenSearch.Application.Services.SupportedLanguage
 
         public async Task<GetSupportedLanguagesResponse> GetSupportedLanguagesAsync()
         {
-            var supportedLanguages = await languageRepository.GetSupportedLanguagesAsync();
-
-            if (supportedLanguages != null && supportedLanguages.Count != 0) {
-                return new GetSupportedLanguagesResponse()
-                {
-                    Languages = [.. supportedLanguages.Select(x => x.ISO6391)]
-                };
-            }
-            else
+            return new GetSupportedLanguagesResponse()
             {
-                logger.LogWarning("Zero languages received from the repository. Reverting to an external API.");
-
-                var tmdbLanguages = await tmdbService.GetLanguagesAsync();
-
-                if (tmdbLanguages != null && tmdbLanguages.Count != 0)
-                {
-                    return new GetSupportedLanguagesResponse()
-                    {
-                        Languages = [.. tmdbLanguages.Select(x => x.ISO6391)]
-                    };
-                }
-                else
-                {
-                    return new GetSupportedLanguagesResponse()
-                    {
-                        Languages = [_fallbackCulture]
-                    };
-                }
-            }
+                Languages = await GetAsync()
+            };
         }
 
         public async Task SaveSupportedLanguagesAsync()
@@ -55,14 +30,54 @@ namespace ScreenSearch.Application.Services.SupportedLanguage
 
             if (tmdbLanguages == null || tmdbLanguages.Count == 0)
             {
-                logger.LogWarning($"Zero languages received from the repository when attempting to save data.");
+                logger.LogWarning($"{nameof(SaveSupportedLanguagesAsync)}: No supported languages received when saving.");
             }
             else
             {
                 var languageCollection = tmdbLanguages.Select(x => x.MapToRepositoryData()).ToList();
 
                 await languageRepository.SaveSupportedLanguagesAsync(languageCollection);
+            }
+        }
 
+        public async Task<bool> IsLanguageSupportedAsync(string language)
+        {
+            var supportedLanguages = await GetAsync();
+
+            if (supportedLanguages == null || supportedLanguages.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return supportedLanguages.Contains(language);
+            }
+        }
+
+        private async Task<List<string>> GetAsync()
+        {
+            var supportedLanguages = await languageRepository.GetSupportedLanguagesAsync();
+
+            if (supportedLanguages != null && supportedLanguages.Count != 0)
+            {
+                return [.. supportedLanguages.Select(x => x.ISO6391)];
+            }
+            else
+            {
+                logger.LogWarning($"{nameof(GetAsync)}: No supported languages received from cache during retrieval.");
+
+                var tmdbLanguages = await tmdbService.GetLanguagesAsync();
+
+                if (tmdbLanguages != null && tmdbLanguages.Count != 0)
+                {
+                    return [.. tmdbLanguages.Select(x => x.ISO6391)];
+                }
+                else
+                {
+                    logger.LogWarning($"{nameof(GetAsync)}: No supported languages received from TMDB during retrieval.");
+
+                    return [_fallbackCulture];
+                }
             }
         }
     }

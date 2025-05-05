@@ -16,8 +16,6 @@ namespace ScreenSearch.Configuration
 
         public SupportedLanguagesJobSettingsElement SupportedLanguagesJobSettings { get; set; }
 
-        public RateLimitSettingsElement RateLimitSettings { get; set; }
-
         public LanguageSettingsElement LanguageSettings { get; set; }
     }
 }

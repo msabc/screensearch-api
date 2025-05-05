@@ -12,19 +12,19 @@ namespace ScreenSearch.Application.Services.Detail
         IKinocheckService kinocheckService,
         ITMDBService tmdbService) : IDetailService
     {
-        public async Task<GetMovieDetailResponse> GetMovieDetailsByIdAsync(int tmdbId)
+        public async Task<GetMovieDetailResponse> GetMovieDetailsByIdAsync(int tmdbId, string? language)
         {
-            string language = languageResolverService.ParseLanguage();
+            string parsedLanguage = await languageResolverService.ParseLanguageAsync(nameof(language));
 
             GetMovieDetailResponse response = new();
 
-            var cachedDetail = await cachedDetailRepository.GetMovieDetailsAsync(tmdbId, language);
+            var cachedDetail = await cachedDetailRepository.GetMovieDetailsAsync(tmdbId, parsedLanguage);
 
             if (cachedDetail.Metadata == null)
             {
-                response.Metadata = await tmdbService.GetMovieDetailsByIdAsync(tmdbId, language);
+                response.Metadata = await tmdbService.GetMovieDetailsByIdAsync(tmdbId, parsedLanguage);
 
-                await cachedDetailRepository.SaveMovieMetadataAsync(tmdbId, language, response.Metadata);
+                await cachedDetailRepository.SaveMovieMetadataAsync(tmdbId, parsedLanguage, response.Metadata);
             }
             else
             {
@@ -37,7 +37,7 @@ namespace ScreenSearch.Application.Services.Detail
 
                 if (kinocheckResponse.Videos.Count > 0)
                 {
-                    await cachedDetailRepository.SaveMovieTrailersAsync(tmdbId, language, kinocheckResponse.Videos);
+                    await cachedDetailRepository.SaveMovieTrailersAsync(tmdbId, parsedLanguage, kinocheckResponse.Videos);
                     response.Videos = kinocheckResponse.Videos;
                 }
             }
@@ -49,19 +49,19 @@ namespace ScreenSearch.Application.Services.Detail
             return response;
         }
 
-        public async Task<GetSeriesDetailResponse> GetSeriesDetailsByIdAsync(int tmdbId)
+        public async Task<GetSeriesDetailResponse> GetSeriesDetailsByIdAsync(int tmdbId, string? language)
         {
-            string language = languageResolverService.ParseLanguage();
+            string parsedLanguage = await languageResolverService.ParseLanguageAsync(nameof(language));
 
             GetSeriesDetailResponse response = new();
 
-            var cachedDetail = await cachedDetailRepository.GetSeriesDetailsAsync(tmdbId, language);
+            var cachedDetail = await cachedDetailRepository.GetSeriesDetailsAsync(tmdbId, parsedLanguage);
 
             if (cachedDetail.Metadata == null)
             {
-                response.Metadata = await tmdbService.GetSeriesDetailsByIdAsync(tmdbId, language);
+                response.Metadata = await tmdbService.GetSeriesDetailsByIdAsync(tmdbId, parsedLanguage);
 
-                await cachedDetailRepository.SaveSeriesMetadataAsync(tmdbId, language, response.Metadata);
+                await cachedDetailRepository.SaveSeriesMetadataAsync(tmdbId, parsedLanguage, response.Metadata);
             }
             else
             {
@@ -74,7 +74,7 @@ namespace ScreenSearch.Application.Services.Detail
 
                 if (kinocheckResponse.Videos.Count > 0)
                 {
-                    await cachedDetailRepository.SaveSeriesTrailersAsync(tmdbId, language, kinocheckResponse.Videos);
+                    await cachedDetailRepository.SaveSeriesTrailersAsync(tmdbId, parsedLanguage, kinocheckResponse.Videos);
                     response.Videos = kinocheckResponse.Videos;
                 }
             }

@@ -9,12 +9,12 @@ namespace ScreenSearch.Application.Mapper
 {
     internal static class SearchMapper
     {
-        public static TMDBSearchMoviesRequest MapToInfrastructureRequest(this SearchMoviesRequest request)
+        public static TMDBSearchMoviesRequest MapToInfrastructureRequest(this SearchMoviesRequest request, string language)
         {
             return new TMDBSearchMoviesRequest()
             {
                 Query = request.Query,
-                Language = request.Language,
+                Language = language,
                 Page = request.Page,
                 PrimaryReleaseYear = request.PrimaryReleaseYear,
                 IncludeAdult = request.IncludeAdult,
@@ -23,12 +23,12 @@ namespace ScreenSearch.Application.Mapper
             };
         }
 
-        public static TMDBSearchSeriesRequest MapToInfrastructureRequest(this SearchSeriesRequest request)
+        public static TMDBSearchSeriesRequest MapToInfrastructureRequest(this SearchSeriesRequest request, string language)
         {
             return new TMDBSearchSeriesRequest()
             {
                 Query = request.Query,
-                Language = request.Language,
+                Language = language,
                 Page = request.Page,
                 FirstAirDateYear = request.FirstAirDateYear,
                 IncludeAdult = request.IncludeAdult,

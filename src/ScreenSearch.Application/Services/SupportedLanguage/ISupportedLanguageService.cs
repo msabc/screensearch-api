@@ -6,6 +6,8 @@ namespace ScreenSearch.Application.Services.SupportedLanguage
     {
         Task<GetSupportedLanguagesResponse> GetSupportedLanguagesAsync();
 
+        Task<bool> IsLanguageSupportedAsync(string language);
+
         Task SaveSupportedLanguagesAsync();
     }
 }

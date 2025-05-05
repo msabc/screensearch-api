@@ -1,18 +1,16 @@
 using System.Globalization;
-using System.Threading.RateLimiting;
 using Asp.Versioning;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
-using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement;
 using Scalar.AspNetCore;
-using ScreenSearch.Api.Constants;
 using ScreenSearch.Api.Conventions;
 using ScreenSearch.Api.Filters;
 using ScreenSearch.Api.Jobs;
-using ScreenSearch.IoC;
 using ScreenSearch.Application.Services.SupportedLanguage;
+using ScreenSearch.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +34,7 @@ builder.Services.AddApiVersioning(options =>
 
 builder.Services.AddRouting(options =>
 {
+    options.LowercaseQueryStrings = true;
     options.LowercaseUrls = true;
 });
 
@@ -49,25 +48,6 @@ builder.Services.AddHostedService<SupportedLanguagesJob>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddFeatureManagement();
-
-builder.Services.AddRateLimiter(options =>
-{
-    options.AddPolicy(RateLimitPolicies.TMDBPolicy, context =>
-    {
-        return RateLimitPartition.GetFixedWindowLimiter(
-            partitionKey: "tmdb",
-            factory: key => new FixedWindowRateLimiterOptions
-            {
-                PermitLimit = settings.RateLimitSettings.TMDB.NumberOfRequestsPermitted,
-                Window = TimeSpan.FromSeconds(settings.RateLimitSettings.TMDB.WindowSizeInSeconds),
-                QueueLimit = 0,
-                AutoReplenishment = true
-            }
-        );
-    });
-
-    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-});
 
 if (!builder.Environment.IsDevelopment())
 {
@@ -115,8 +95,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseRateLimiter();
 
 app.MapControllers();
 
