@@ -10,17 +10,38 @@ The project uses:
 - [Kinocheck API](https://api.kinocheck.com/) for querying videos about a movie or a TV show.
 
 ## Multilingual support
-> ❗ The API is intended to support multiple languages, although for now this is only limited to English and German due to the fact that Kinocheck API supports only these two languages.
+The API supports multiple languages with the following precedance (from most important to least):
+1. Query string parameter ('language')
+2. Route parameter ('language')
+3. 'Accept-Language' HTTP request header
 
 ## Rate limiting
-- ScreenSearch.Api uses a rate limiter in sync with the rules of [TMDB API rate limiting](https://developer.themoviedb.org/docs/rate-limiting).
-- Rate limiting is fully configurable through application settings.
+- ScreenSearch.Api does not use rate limiting, although TMDB API requires it: [TMDB API rate limiting](https://developer.themoviedb.org/docs/rate-limiting).
+- Before deployment several resources need to be provisioned in order to enable rate limiting
 
 ## Background jobs
-- ScreenSearch.Api uses a background job for trending movies and tv shows:
-    - the job is controlled using a feature flag called **'TrendingJobEnabled'**
-    - when this feature flag is enabled, TMDB API is periodically called for caching data of trending movies and TV shows
-    - the job execution parameters are fully configurable via application settings
+ScreenSearch.Api uses 2 background jobs:
+<table style="font-family: Arial, sans-serif;">
+  <thead>
+    <tr style="background-color: #f2f2f2;">
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left;"><a href="https://owasp.org/Top10" target="_blank">Name</a></th>
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Purpose</th>
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Runs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td>TrendingBackgroundJob</td>
+        <td>Periodically calls TMDB API in order to cache data of <b>trending movies and TV shows</b>.</td>
+        <td>Once every hour.</td>
+    </tr>
+    <tr>
+        <td>SupportedLanguagesJob</td>
+        <td>Periodically calls TMDB API in order to cache <b>supported language data</b>.</td>
+        <td>Once every hour.</td>
+    </tr>
+    </tbody>
+</table>
 
 ## Caching
 Redis is used for caching so you'll need to provide a Redis connection string before running the project.
@@ -75,6 +96,14 @@ to successfully set up your account.
 > Replace the values in brackets with your own values. 
 
 5. Run the project
+
+## Deployment
+In order to set up a fully scalable global Web API, I would provision the following resources: 
+
+1. Several **Azure App Service** instances accross the globe
+2. One Azure **API Management** with a global cache rate limiter
+3. **Azure Front Door**
+4. **Azure Cache for Redis**
 
 ## CI/CD
 This repository uses Github Actions for CI/CD.
