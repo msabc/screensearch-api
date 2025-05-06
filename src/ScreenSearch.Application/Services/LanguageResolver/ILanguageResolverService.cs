@@ -2,6 +2,6 @@
 {
     public interface ILanguageResolverService
     {
-        Task<string> ParseLanguageAsync(string? languageQueryParameter);
+        Task<string> ParseLanguageAsync();
     }
 }

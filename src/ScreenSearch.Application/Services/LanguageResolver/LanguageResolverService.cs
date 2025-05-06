@@ -13,7 +13,7 @@ namespace ScreenSearch.Application.Services.LanguageResolver
     {
         private readonly string _defaultCulture = screenSearchOptions.Value.LanguageSettings.DefaultCulture;
 
-        public async Task<string> ParseLanguageAsync(string? languageQueryParameter)
+        public async Task<string> ParseLanguageAsync()
         {
             var httpContext = httpContextAccessor.HttpContext;
             
@@ -22,21 +22,6 @@ namespace ScreenSearch.Application.Services.LanguageResolver
                 return _defaultCulture;
             }
 
-            // check the query
-            if (!string.IsNullOrWhiteSpace(languageQueryParameter) && httpContext.Request.Query.ContainsKey(languageQueryParameter))
-            {
-                var queryLanguage = httpContext.Request.Query[languageQueryParameter].ToString();
-
-                if (!string.IsNullOrWhiteSpace(queryLanguage))
-                {
-                    if (await supportedLanguageService.IsLanguageSupportedAsync(queryLanguage))
-                    {
-                        return queryLanguage;
-                    }
-                }
-            }
-
-            // check the request
             var cultureFeature = httpContext.Features.Get<IRequestCultureFeature>();
 
             if (cultureFeature != null)

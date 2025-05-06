@@ -13,7 +13,7 @@ namespace ScreenSearch.Application.Services.Search
     {
         public async Task<PagedResponse<SearchMoviesResponseDto>> SearchMoviesAsync(SearchMoviesRequest request)
         {
-            string language = await languageResolverService.ParseLanguageAsync(nameof(SearchMoviesRequest.Language));
+            string language = await languageResolverService.ParseLanguageAsync();
 
             var response = await tmdbService.SearchMoviesAsync(request.MapToInfrastructureRequest(language));
 
@@ -22,7 +22,7 @@ namespace ScreenSearch.Application.Services.Search
 
         public async Task<PagedResponse<SearchSeriesResponseDto>> SearchSeriesAsync(SearchSeriesRequest request)
         {
-            string language = await languageResolverService.ParseLanguageAsync(nameof(SearchMoviesRequest.Language));
+            string language = await languageResolverService.ParseLanguageAsync();
 
             var response = await tmdbService.SearchSeriesAsync(request.MapToInfrastructureRequest(language));
 

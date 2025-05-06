@@ -12,8 +12,16 @@ The project uses:
 ## Multilingual support
 The API supports multiple languages with the following precedance (from most important to least):
 1. Query string parameter ('language')
-2. Route parameter ('language')
-3. 'Accept-Language' HTTP request header
+2. 'Accept-Language' HTTP request header
+3. 'ScreenSearch.Culture' Cookie
+
+Use the [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) standard for setting the value of the language.
+
+Endpoints that support multiple languages will respect this parameter. 
+
+The fallback language for unrecognized and/or unsupported cultures is **English**. 
+
+This option is fully configurable.
 
 ## Rate limiting
 - ScreenSearch.Api does not use rate limiting, although TMDB API requires it: [TMDB API rate limiting](https://developer.themoviedb.org/docs/rate-limiting).

@@ -8,8 +8,6 @@ namespace ScreenSearch.Application.Models.Request.Search.Base
         [StringLength(300)]
         public required string Query { get; set; }
 
-        public string? Language { get; set; }
-
         public bool? IncludeAdult { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Page should be a positive integer.")]

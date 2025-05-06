@@ -2,10 +2,10 @@ using System.Globalization;
 using Asp.Versioning;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement;
 using Scalar.AspNetCore;
+using ScreenSearch.Api.Constants;
 using ScreenSearch.Api.Conventions;
 using ScreenSearch.Api.Filters;
 using ScreenSearch.Api.Jobs;
@@ -76,9 +76,8 @@ using (var scope = app.Services.CreateScope())
         RequestCultureProviders =
         [
             new QueryStringRequestCultureProvider { QueryStringKey = "language" },
-            new RouteDataRequestCultureProvider { RouteDataStringKey = "language" },
             new AcceptLanguageHeaderRequestCultureProvider(),
-            new CookieRequestCultureProvider()
+            new CookieRequestCultureProvider() { CookieName = CookieNames.Culture  }
         ]
     };
 
