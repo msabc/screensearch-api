@@ -8,12 +8,12 @@ namespace ScreenSearch.Infrastructure.Repositories
 {
     public class SupportedLanguageRepository(ICacheStore cacheStore) : ISupportedLanguageRepository
     {
-        public async Task SaveSupportedLanguagesAsync(List<SupportedLanguage> languages)
+        public async Task SaveAsync(List<SupportedLanguage> languages)
         {
             await cacheStore.SetValueAsync($"{CacheKeys.Languages}", JsonSerializer.Serialize(languages), null);
         }
 
-        public async Task<List<SupportedLanguage>> GetSupportedLanguagesAsync()
+        public async Task<List<SupportedLanguage>> GetAsync()
         {
             string? supportedLanguages = await cacheStore.GetValueAsync($"{CacheKeys.Languages}", null);
 

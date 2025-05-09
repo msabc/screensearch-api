@@ -36,27 +36,21 @@ namespace ScreenSearch.Application.Services.SupportedLanguage
             {
                 var languageCollection = tmdbLanguages.Select(x => x.MapToRepositoryData()).ToList();
 
-                await languageRepository.SaveSupportedLanguagesAsync(languageCollection);
+                await languageRepository.SaveAsync(languageCollection);
             }
         }
 
         public async Task<bool> IsLanguageSupportedAsync(string language)
         {
+            // not reverting to an HTTP calling in case of a missing language is intentional
             var supportedLanguages = await GetAsync();
 
-            if (supportedLanguages == null || supportedLanguages.Count == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return supportedLanguages.Contains(language);
-            }
+            return supportedLanguages.Contains(language);
         }
 
         private async Task<List<string>> GetAsync()
         {
-            var supportedLanguages = await languageRepository.GetSupportedLanguagesAsync();
+            var supportedLanguages = await languageRepository.GetAsync();
 
             if (supportedLanguages != null && supportedLanguages.Count != 0)
             {

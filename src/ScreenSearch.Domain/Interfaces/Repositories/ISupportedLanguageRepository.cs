@@ -4,8 +4,8 @@ namespace ScreenSearch.Domain.Interfaces.Repositories
 {
     public interface ISupportedLanguageRepository
     {
-        Task SaveSupportedLanguagesAsync(List<SupportedLanguage> languages);
+        Task SaveAsync(List<SupportedLanguage> languages);
 
-        Task<List<SupportedLanguage>> GetSupportedLanguagesAsync();
+        Task<List<SupportedLanguage>> GetAsync();
     }
 }
